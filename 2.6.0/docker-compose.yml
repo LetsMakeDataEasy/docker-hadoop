@@ -1,23 +1,26 @@
-namenode:
+version: '2'
+services:
+  namenode:
     image: gelog/hadoop
-    ports: 
-        - "50070:50070"
+    ports:
+      - "50070:50070"
+      - "9000"
     command: hdfs namenode
     hostname: hdfs-namenode
 
-datanode:
+  datanode:
     image: gelog/hadoop
     command: hdfs datanode
     ports:
-# The host port is randomly assigned by Docker, to allow scaling to multiple DataNodes on the same host
-        - "50075"
+      # The host port is randomly assigned by Docker, to allow scaling to multiple DataNodes on the same host
+      - "50075"
     links:
-        - namenode:hdfs-namenode
+      - namenode:hdfs-namenode
 
-secondarynamenode:
+  secondarynamenode:
     image: gelog/hadoop
     command: hdfs secondarynamenode
     ports:
-        - "50090:50090"
+      - "50090:50090"
     links:
-        - namenode:hdfs-namenode
+      - namenode:hdfs-namenode
